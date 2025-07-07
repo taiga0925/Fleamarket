@@ -157,4 +157,8 @@ return [
         ]),
     ],
 
+    'redirects' => [
+        'register' => '/mypage/profile',
+    ],
+
 ];

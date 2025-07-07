@@ -1,0 +1,250 @@
+.tab-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 45px;
+}
+
+.tab-wrap__label {
+    order: -1;
+    width: 120px;
+    padding: 5px 10px;
+    color: #999;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+.tab-wrap__label:first-child {
+    margin-left: 50px;
+}
+
+.tab-wrap__label:hover {
+    opacity: 0.6;
+}
+
+.tab-wrap__input {
+    display: none;
+}
+
+.tab-wrap__group {
+    display: none;
+    width: 100%;
+    padding: 30px 50px;
+    border-top: 2px solid lightgrey;
+}
+
+.tab-wrap__group-link {
+    display: none;
+    width: 100%;
+    padding: 30px 50px;
+    border-top: 2px solid lightgrey;
+}
+
+.tab-wrap__label:has(:checked) {
+    color: red;
+}
+
+.tab-wrap__label:has(:checked)+.tab-wrap__group {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.tab-wrap__label:has(:checked)+.users-table__group {
+    display: block;
+}
+
+.tab-wrap__label:has(:checked)+.tab-wrap__group-link {
+    display: block;
+}
+
+.tab-wrap__group-text {
+    font-size: 1.4rem;
+}
+
+.tab-wrap__content {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.tab-wrap__content-link {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.tab-wrap__content-image {
+    width: 200px;
+    height: 200px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border: 1px solid lightgrey;
+}
+
+.dummy {
+    visibility: hidden;
+    height: 0;
+}
+
+.object-fit--contain {
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+.link-button {
+    font-size: 1.8rem;
+}
+
+.link-button:hover {
+    opacity: 0.6;
+}
+
+.sold-out__mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(255, 73, 73);
+    color: white;
+    padding: 5px;
+    font-size: 1.4rem;
+}
+
+.permission-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(73, 128, 255);
+    color: white;
+    padding: 5px;
+    font-size: 1.4rem;
+}
+
+/*  mypage -------------------- */
+.user-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.user-group {
+    display: flex;
+    align-items: center;
+    width: 70%;
+}
+
+.user-group__icon {
+    -o-object-fit: cover;
+    object-fit: cover;
+    height: 120px;
+    width: 120px;
+    border: 1px solid lightgrey;
+    border-radius: 50%;
+}
+
+.user-unit {
+    width: 70%;
+    text-align: left;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.user-wrap__profile {
+    color: rgb(255, 73, 73);
+    font-weight: bold;
+    text-decoration: none;
+    border: 2px solid rgb(255, 73, 73);
+    border-radius: 3px;
+    padding: 3px 20px;
+    font-size: 1.4rem;
+}
+
+.users-table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.users-table__row {
+    height: 50px;
+    border-bottom: 1px solid lightgrey;
+    text-align: left;
+}
+
+.users-table__row:first-child {
+    border-bottom: 2px solid grey;
+}
+
+.users-table__header,
+.users-table__data {
+    padding: 0 10px;
+}
+
+.users-table__id {
+    width: 10%;
+}
+
+.users-table__name {
+    width: 25%;
+}
+
+.users-table__email {
+    width: 50%;
+}
+
+.users-table__delete {
+    width: 15%;
+    text-align: center;
+}
+
+.submit-button {
+    width: 100%;
+    max-width: 120px;
+    height: 30px;
+    text-decoration: none;
+    background-color: rgb(255, 73, 73);
+    color: white;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 1.4rem;
+    border: none;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    opacity: 0.6;
+}
+
+@media screen and (max-width:768px) {
+
+    .user-wrap,
+    .user-group {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .user-unit {
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .user-wrap__profile {
+        display: block;
+        width: 70%;
+        margin: 0 auto;
+    }
+}
+

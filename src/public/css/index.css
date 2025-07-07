@@ -1,69 +1,60 @@
-.attendance__alert--success {
-    padding: 10px 30px;
-    border-color: #badbcc;
-    background-color: #d1e7dd;
-    color: #0f5132;
+
+.tab-switch {
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.attendance__alert--danger {
-    padding: 10px 0;
-    border-color: #f5c2c7;
-    background-color: #f8d7da;
-    color: #842029;
-}
-
-.attendance__alert--danger ul {
-    margin: 0;
-}
-
-.attendance__panel {
-    margin: 0 auto;
-    width: 70%;
-}
-
-.attendance__button {
+.tab-switch:after {
+    content: '';
     width: 100%;
-    text-align: center;
+    display: block;
+    order: -1;
+    /* 擬似要素を上部に配置 */
 }
 
-.attendance__button-submit {
-    padding: 5px;
-    width: 30%;
-    height: 50px;
-    border: none;
-    border-radius: 3px;
-    background: #000;
-    color: #fff;
+.tab-switch>label {
+    order: -1;
+    /* タブボタンを上部に配置 */
+    text-align: center;
     cursor: pointer;
+    padding: 5% 0 1% 7%;
 }
 
-.attendance__content {
-    margin: 0 auto;
-    padding: 30px 15px;
-    max-width: 1230px;
+.tab-switch>label:hover,
+.tab-switch label:has(:checked) {
+    color: red;
 }
 
-.attendance-table {
-    margin: 30px auto;
-    width: 70%;
-    text-align: center;
+.tab-switch input {
+    display: none;
 }
 
-.attendance-table__inner {
+/* タブコンテンツのスタイル */
+.tab-switch>div {
+    display: none;
+    /* 初期状態ではコンテンツを非表示に */
     width: 100%;
 }
 
-.attendance-table__row {
-    border-bottom: 1px solid #ddd;
+/* 選択されたタブのコンテンツを表示 */
+.tab-switch label:has(:checked)+div {
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.attendance-table__header {
-    padding: 12px;
-    width: 20%;
-    font-weight: bold;
+.tab-content {
+    border-top: 1px solid #000;
 }
 
-.attendance-table__item {
-    padding: 12px;
+.content {
     width: 20%;
+    margin: 3% 2%;
+}
+
+.tab-content img {
+    width: 100%;
+}
+
+.content-name__link {
+    text-decoration: none;
 }

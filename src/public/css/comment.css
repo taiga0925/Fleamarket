@@ -1,0 +1,43 @@
+main {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 110px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.item-group{
+    width: 80%;
+}
+
+.comments {
+    border: 1px solid #c3c3c3;
+    border-radius: 3px;
+}
+
+
+.user-list {
+    height: 45px;
+    width: 30%;
+    display: flex;
+    margin-top: 8px;
+}
+
+.user-list__image {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    border: 1px solid lightgrey;
+    border-radius: 50px;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+.comment-list {
+    height: 45px;
+    border-bottom: 1px solid #c3c3c3;
+}
+
+.item-redirect {
+    text-decoration: none;
+}

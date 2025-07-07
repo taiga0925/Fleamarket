@@ -1,0 +1,133 @@
+.tab-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 45px;
+}
+
+.tab-wrap__label {
+    order: -1;
+    width: 120px;
+    padding: 5px 10px;
+    color: #999;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.tab-wrap__label:first-child {
+    margin-left: 50px;
+}
+
+.tab-wrap__label:hover {
+    opacity: 0.6;
+}
+
+.tab-wrap__input {
+    display: none;
+}
+
+.tab-wrap__group {
+    display: none;
+    width: 100%;
+    padding: 30px 50px;
+    border-top: 2px solid lightgrey;
+}
+
+.tab-wrap__group-link {
+    display: none;
+    width: 100%;
+    padding: 30px 50px;
+    border-top: 2px solid lightgrey;
+}
+
+.tab-wrap__label:has(:checked) {
+    color: red;
+}
+
+.tab-wrap__label:has(:checked)+.tab-wrap__group {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.tab-wrap__label:has(:checked)+.users-table__group {
+    display: block;
+}
+
+.tab-wrap__label:has(:checked)+.tab-wrap__group-link {
+    display: block;
+}
+
+.tab-wrap__group-text {
+    font-size: 1.4rem;
+}
+
+.tab-wrap__content {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.tab-wrap__content-link {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.tab-wrap__content-image {
+    width: 200px;
+    height: 200px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border: 1px solid lightgrey;
+}
+
+.dummy {
+    visibility: hidden;
+    height: 0;
+}
+
+.object-fit--contain {
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+.link-button {
+    font-size: 1.8rem;
+}
+
+.link-button:hover {
+    opacity: 0.6;
+}
+
+.sold-out__mark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(255, 73, 73);
+    color: white;
+    padding: 5px;
+    font-size: 1.4rem;
+}
+
+.permission-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(73, 128, 255);
+    color: white;
+    padding: 5px;
+    font-size: 1.4rem;
+}
+
+
+

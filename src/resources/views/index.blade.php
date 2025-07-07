@@ -5,32 +5,52 @@
 @endsection
 
 @section('content')
-<div class="attendance__alert">
-  // メッセージ機能
-</div>
+<div class="tab-switch">
+    <label>
+        <input type="radio" name="TAB" checked>
+        おすすめ
+    </label>
+    <div class="tab-content">
+        @foreach($items as $item)
+        <div class="content">
+            @if ($item->soldToUsers()->exists())
+                <div class="sold-out__mark">Sold</div>
+            @endif
+            <a class="tab-wrap__content-link" href="/item/{{ $item->id }}">
+                <img class="tab-wrap__content-image" src="{{ asset('storage/images/'.$item->image) }}">
+                {{ $item->item }}
+            </a>
+        </div>
+        @endforeach
+    </div>
 
-<div class="attendance__content">
-  <div class="attendance__panel">
-    <form class="attendance__button">
-      <button class="attendance__button-submit" type="submit">勤務開始</button>
-    </form>
-    <form class="attendance__button">
-      <button class="attendance__button-submit" type="submit">勤務終了</button>
-    </form>
-  </div>
-  <div class="attendance-table">
-    <table class="attendance-table__inner">
-      <tr class="attendance-table__row">
-        <th class="attendance-table__header">名前</th>
-        <th class="attendance-table__header">開始時間</th>
-        <th class="attendance-table__header">終了時間</th>
-      </tr>
-      <tr class="attendance-table__row">
-        <td class="attendance-table__item">サンプル太郎</td>
-        <td class="attendance-table__item">サンプル</td>
-        <td class="attendance-table__item">サンプル</td>
-      </tr>
-    </table>
-  </div>
+    <label><input type="radio" name="TAB">マイリスト</label>
+    <div class="tab-content">
+        @if (Auth::check())
+            <div class="tab-wrap__group">
+                @forelse ($likeItems as $likeItem)
+                    <div class="tab-wrap__content">
+                        @if ($likeItem->soldToUsers()->exists())
+                            <div class="sold-out__mark">SOLD OUT</div>
+                        @endif
+                        <a class="tab-wrap__content-link" href="/item/{{ $likeItem->id }}">
+                            <img class="tab-wrap__content-image" src="{{ asset('storage/images/'.$likeItem->image) }}">
+                            {{ $item->item }}
+                        </a>
+                    </div>
+                @empty
+                    <p class="no-message">マイリストはありません</p>
+                @endforelse
+            </div>
+        @else
+            <div class="tab-wrap__group-link">
+                <a class="link-button" href="/register">会員登録</a>
+                <span class="tab-wrap__group-text">及び</span>
+                <a class="link-button" href="/login">ログイン</a>
+                <span class="tab-warp__group-text">が必要です。</span>
+            </div>
+        @endif
+    </div>
+
 </div>
 @endsection
