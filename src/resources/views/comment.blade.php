@@ -20,7 +20,7 @@
                 @if(! is_null($comments))
                 @foreach($comments as $comment)
                 <div class="user-list">
-                    <img class="user-list__image" src="{{ $user->image }}">
+                    <img class="user-list__image" src="{{ asset('storage/profiles/'.$user->img_url) }}">
                     <span class="user-list__name">{{ $user->name }}</span>
                 </div>
                 <div class="comment-list">

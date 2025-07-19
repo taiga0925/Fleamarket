@@ -5,6 +5,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +18,15 @@ use App\Http\Controllers\SellController;
 |
 */
 
-Route::middleware('auth')->group(function () {
+Route::get('/', [ItemController::class, 'index']);
+Route::get('/search', [ItemController::class, 'search']);
+Route::get('/item/{id}', [ItemController::class, 'item']);
 
+// 認証メール再送ルート
+Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, '__invoke'])
+    ->name('verification.send');
+
+Route::middleware(['auth', 'verified'])->group(function () {
     // マイページ関連
     Route::prefix('mypage')->group(function () {
         Route::get('/', [MypageController::class, 'index']);
@@ -43,14 +51,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/comment/{item_id}', [ItemController::class, 'comment']);
     });
 
-
     // 出品関連
     Route::get('/sell', [SellController::class, 'index']);
     Route::get('/sell/{item_id}', [SellController::class, 'index']);
     Route::post('/sell', [SellController::class, 'create']);
-
 });
-
-Route::get('/', [ItemController::class, 'index']);
-Route::get('/search', [ItemController::class, 'search']);
-Route::get('/item/{id}', [ItemController::class, 'item']);

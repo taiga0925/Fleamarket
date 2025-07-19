@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 class MyPageController extends Controller
 {
     /**
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified']);
+    }
+
+    /**
      * マイページ画面
      * @return view ビュー
      */

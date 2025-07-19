@@ -88,7 +88,7 @@
                 <div class="comment-group">
                     @if (Auth::check())
                     <div class="comment-content comment-content--right">
-                        <div class="user-area user-area--right">
+                        <div class="user-area">
                             <img class="user-area__image" src="{{ asset('storage/profiles/'.$user->img_url) }}">
                             <span class="user-area__name">{{ $user->name }}</span>
                         </div>

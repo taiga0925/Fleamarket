@@ -12,6 +12,7 @@ use App\Models\Comment;
 
 class ItemController extends Controller
 {
+
     /**
      * 商品一覧画面
      * @return view ビュー
@@ -123,11 +124,10 @@ class ItemController extends Controller
         return redirect()->back();
     }
 
-    private function checkUserLiked($item)
-    {
-        return $item->likeUsers()->where('user_id', Auth::id())->exists();
-    }
-
+    /**
+     * 検索機能
+     * @return view ビュー
+     */
     public function search(Request $request)
     {
         $searchText = $request->input('searchText');
@@ -162,5 +162,10 @@ class ItemController extends Controller
                 'items' => $items,
                 'likeItems' => $likeItems
             ]);;
+    }
+
+    private function checkUserLiked($item)
+    {
+        return $item->likeUsers()->where('user_id', Auth::id())->exists();
     }
 }

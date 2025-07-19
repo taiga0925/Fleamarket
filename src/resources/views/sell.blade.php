@@ -19,7 +19,8 @@
     <h2 class="main-title">商品の出品</h2>
     <form class="form-wrap" action="{{ isset($item_id) ? '/sell/' . $item_id : '/sell' }}" method="post" enctype="multipart/form-data">
         @csrf
-        <span class="form-wrap__label">商品画像
+        <span class="form-wrap__label">
+            商品画像
             @if($item)
                 <a class="image-link" href="{{ $item->image}}">
                     <img class="preview-image" id="preview-image" src="{{ $item->image }}">
@@ -38,13 +39,13 @@
         @enderror
 
         <h3 class="form-wrap__title">商品の詳細</h3>
-        <label class="form-wrap__label">カテゴリー
-            <select class="form-wrap__select" name="category_id">
-                @foreach ($selectCategories as $category)
-                    <option value="{{ $category['id'] }}" {{ $category['selected'] ? 'selected' : '' }}>{{ $category['category'] }}</option>
-                @endforeach
-            </select>
-        </label>
+        <p class="form-wrap__label-category">カテゴリー</p>
+            @foreach ($selectCategories as $category)
+                <input class="form-wrap__select-category" id="category" type="checkbox" name="category_id" value="{{ $category['id'] }}" {{ $category['selected'] ? 'selected' : '' }}>
+                <label class="form-wrap__select-category-label" for="category" onclick="toggleBackgroundColor(this)">
+                    {{ $category->category }}
+                </label>
+            @endforeach
         @error('category_id')
             <div class="form-wrap__error">{{ $message }}</div>
         @enderror
@@ -62,21 +63,24 @@
         @enderror
 
         <h3 class="form-wrap__title">商品名と説明</h3>
-        <label class="form-wrap__label">商品名
+        <label class="form-wrap__label">
+            商品名
             <input class="form-wrap__input" type="text" name="item" value="{{ $item->item ?? '' }}">
         </label>
         @error('item')
             <div class="form-wrap__error">{{ $message }}</div>
         @enderror
 
-        <label class="form-wrap__label">ブランド名
+        <label class="form-wrap__label">
+            ブランド名
             <input class="form-wrap__input" type="text" name="brand" value="{{ $item->brand ?? '' }}">
         </label>
         @error('brand')
             <div class="form-wrap__error">{{ $message }}</div>
         @enderror
 
-        <label class="form-wrap__label">商品の説明
+        <label class="form-wrap__label">
+            商品の説明
             <textarea class="form-wrap__textarea" name="detail" cols="30" rows="5">{{ $item->detail ?? '' }}</textarea>
         </label>
         @error('detail')
@@ -84,7 +88,8 @@
         @enderror
 
         <h3 class="form-wrap__title">販売価格</h3>
-        <label class="form-wrap__label">販売価格
+        <label class="form-wrap__label">
+            販売価格
             <div class="input-wrap">
                 <input class="form-wrap__input input-money" type="text" id="money" name="money"  value="{{ $item->money ?? '' }}" pattern="^[1-9][0-9]*$">
             </div>
@@ -98,10 +103,16 @@
     </form>
 
     <script>
+        function toggleBackgroundColor(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+
+    <script>
         function previewFile() {
-            var preview = document.getElementById('preview-image');
-            var file    = document.querySelector('input[type=file]').files[0];
-            var reader  = new FileReader();
+            let preview = document.getElementById('preview-image');
+            let file    = document.querySelector('input[type=file]').files[0];
+            let reader  = new FileReader();
 
             if (file) {
                 reader.onloadend = function () {

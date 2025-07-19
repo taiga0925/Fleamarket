@@ -176,15 +176,6 @@ main {
     width: 80%;
 }
 
-.comment-content--right {
-    margin-left: auto;
-}
-
-.user-area--right,
-.comment-area--right {
-    text-align: right;
-}
-
 .user-area__name {
     margin: 0 5px;
 }

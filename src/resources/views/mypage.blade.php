@@ -27,11 +27,11 @@
                     @endif
                     <a class="tab-wrap__content-link" href="/item/{{ $item->id }}">
                         <img class="tab-wrap__content-image" src="{{ asset('storage/images/'.$item->image) }}">
+                        <a href="/item/{{ $item->id }}">{{ $item ->item }}</a>
                     </a>
                 </div>
             @endforeach
         </div>
-
 
         <label class="tab-wrap__label">
             <input class="tab-wrap__input" type="radio" value="bought_items" name="tab">購入した商品
@@ -42,6 +42,7 @@
                     <div class="sold-out__mark">Sold</div>
                     <a class="tab-wrap__content-link" href="/item/{{ $item->id }}">
                         <img class="tab-wrap__content-image" src="{{ asset('storage/images/'.$item->image) }}">
+                        <a href="/item/{{ $item->id }}">{{ $item ->item }}</a>
                     </a>
                 </div>
             @endforeach

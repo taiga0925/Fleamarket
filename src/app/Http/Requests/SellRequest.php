@@ -24,7 +24,6 @@ class SellRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'image' => 'required|image',
             'category_id' => 'required',
             'status' => 'required',
             'item' => 'required',
@@ -32,18 +31,12 @@ class SellRequest extends FormRequest
             'money' => 'required|regex:/^[1-9][0-9]*$/'
         ];
 
-        if ($this->route('item_id')) {
-            $rules['image'] = 'image';
-        }
-
         return $rules;
     }
 
     public function messages()
     {
         return [
-            'image.required' => '画像ファイル(jpg png bmp gif svg)を選択してください',
-            'image.image' => '画像ファイル(jpg png bmp gif svg)を選択してください',
             'category_id.required' => 'カテゴリーを選択してください',
             'status.required' => '商品の状態を選択してください',
             'item.required' => '商品名を入力してください',

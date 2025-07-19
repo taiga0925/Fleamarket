@@ -25,8 +25,8 @@ main {
 
 .form-wrap {
     margin: auto;
-    width: 90%;
-    max-width: 400px;
+    width: 100%;
+    max-width: 500px;
 
 }
 
@@ -82,8 +82,8 @@ main {
 .form-wrap__title {
     margin-top: 40px;
     margin-bottom: 0;
-    font-size: 2rem;
-    color: grey;
+    color: gray;
+    font-size: 1.4rem;
     border-bottom: 2px solid grey;
 }
 
@@ -97,9 +97,35 @@ main {
     margin-bottom: 5px;
 }
 
-.form-wrap__input::before {
-    content: "￥";
+.form-wrap__select {
+    background-color: #626669;
+    color: #fff;
 }
+
+.form-wrap__select-category {
+    display: none;
+}
+
+.form-wrap__select-category-label {
+    margin: 5px;
+    width: 100px;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+    padding-left: 8px;
+    padding-right: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rgb(255, 73, 73);
+    border: 2px solid rgb(255, 73, 73);
+    border-radius: 50px;
+}
+
+.form-wrap__select-category-label.active {
+    background-color: rgb(255, 73, 73);
+    /* クリック時の背景色 */
+    color: white;
+    /* 必要に応じてテキスト色も変更 */ }
 
 .form-wrap__error {
     color: red;
@@ -116,13 +142,6 @@ main {
     position: relative;
 }
 
-.input-wrap::before {
-    position: absolute;
-    content: "￥";
-    font-size: 1.4rem;
-    left: 6px;
-    top: 5px;
-}
 
 .input-price {
     padding-left: 20px;
@@ -130,6 +149,7 @@ main {
 
 .form-wrap__button {
     display: block;
+    margin: 0 auto;
     background-color: rgb(255, 73, 73);
     color: #fff;
     border: none;

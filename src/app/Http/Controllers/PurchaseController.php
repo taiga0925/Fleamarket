@@ -8,9 +8,7 @@ use App\Models\Item;
 use App\Models\Sold_item;
 use App\Models\Profile;
 use Illuminate\Support\Facades\Auth;
-use Stripe\Stripe;
-use Stripe\Customer;
-use Stripe\Charge;
+
 
 class PurchaseController extends Controller
 {
@@ -22,8 +20,7 @@ class PurchaseController extends Controller
     {
         $user = Auth::user();
         $item = Item::find($item_id);
-        $profile = Profile::find($user)->first();
-
+        $profile = Profile::find($user->id)->first();
 
         return view('purchase', compact('item', 'profile', ));
     }
@@ -91,26 +88,4 @@ class PurchaseController extends Controller
         return redirect('/item/' . $item_id)->with('success', '購入完了しました');
     }
 
-     /*単発決済用のコード*/
-     public function charge(Request $request)
-     {
-         try {
-             Stripe::setApiKey(env('STRIPE_SECRET'));
-
-             $customer = Customer::create(array(
-                 'email' => $request->stripeEmail,
-                 'source' => $request->stripeToken
-             ));
-
-             $charge = Charge::create(array(
-                 'customer' => $customer->id,
-                 'amount' => 1000,
-                 'currency' => 'jpy'
-             ));
-
-             return back();
-         } catch (\Exception $ex) {
-             return $ex->getMessage();
-         }
-     }
 }

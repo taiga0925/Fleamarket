@@ -1,0 +1,58 @@
+main {
+    margin: auto;
+    margin-top: 100px;
+    width: 85%;
+}
+
+.header__wrap {
+    padding-top: 60px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.header__text {
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.back__button {
+    display: block;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: deepskyblue;
+    text-decoration: none;
+}
+
+.form__item {
+    width: 90%;
+    max-width: 300px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.input-link {
+    display: inline-block;
+    width: 18%;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 5px;
+    border: 2px solid darkgray;
+    border-radius: 5px;
+    background-color: rgb(217, 217, 217);
+    font-size: 1.2rem;
+    text-decoration: none;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form__input-button {
+    border: none;
+    background: none;
+    color: rgb(31, 132, 209);
+    cursor: pointer;
+}
