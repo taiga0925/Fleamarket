@@ -6,6 +6,8 @@ use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\RatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +57,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sell', [SellController::class, 'index']);
     Route::get('/sell/{item_id}', [SellController::class, 'index']);
     Route::post('/sell', [SellController::class, 'create']);
+
+    // チャット機能
+    Route::prefix('item/{item_id}/chat')->group(function () {
+        Route::get('/', [ChatController::class, 'index'])->name('chat.index');
+        Route::post('/', [ChatController::class, 'store'])->name('chat.store'); // 送信用
+
+        // メッセージ削除
+        Route::delete('/{chat_id}', [ChatController::class, 'destroy'])->name('chat.destroy');
+        // メッセージ編集画面
+        Route::get('/{chat_id}/edit', [ChatController::class, 'edit'])->name('chat.edit');
+        // メッセージ更新処理
+        Route::patch('/{chat_id}', [ChatController::class, 'update'])->name('chat.update');
+    });
+
+    // 評価機能
+    Route::prefix('item/{item_id}/rating')->group(function () {
+        Route::post('/', [RatingController::class, 'store'])->name('rating.store');
+    });
 });

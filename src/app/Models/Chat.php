@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Chat extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'sender_id',
+        'receiver_id',
+        'item_id',
+        'message',
+        'image',
+    ];
+
+    // 送信者
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    // 受信者
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id');
+    }
+
+    // 対象商品
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
+}

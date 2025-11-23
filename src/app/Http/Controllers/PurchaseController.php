@@ -20,7 +20,7 @@ class PurchaseController extends Controller
     {
         $user = Auth::user();
         $item = Item::find($item_id);
-        $profile = Profile::find($user->id)->first();
+        $profile = $user->profile;
 
         return view('purchase', compact('item', 'profile', ));
     }

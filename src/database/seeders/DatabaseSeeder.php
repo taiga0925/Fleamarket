@@ -14,6 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(CotegoriesTableSeeder::class);
+
+        //  ユーザー作成 (今回新規作成するファイル)
+        $this->call(UsersTableSeeder::class);
+
         $this->call(ItemsTableSeeder::class);
     }
 }

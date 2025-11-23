@@ -5,6 +5,31 @@
 @endsection
 
 @section('content')
+    {{-- ▼▼▼ 追加部分：フラッシュメッセージ ▼▼▼ --}}
+    @if (session('success'))
+        <div class="message-success" id="message">
+            {{ session('success') }}
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const message = document.getElementById('message');
+                if (message) {
+                    message.style.display = 'block';
+
+                setTimeout(function() {
+                    message.style.transition = 'opacity 1s';
+                    message.style.opacity = '0';
+
+                    setTimeout(function() {
+                        message.style.display = 'none';
+                    }, 1000);
+                }, 3000);
+                }
+            });
+        </script>
+    @endif
+    {{-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ --}}
+
     <div class="tab-wrap">
         <label class="tab-wrap__label recommendation__label">
             <input class="tab-wrap__input" type="radio" name="tab" checked>おすすめ

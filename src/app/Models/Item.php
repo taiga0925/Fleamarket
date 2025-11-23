@@ -53,4 +53,16 @@ class Item extends Model
     public function shops() {
         return $this->belongsToMany(Shop::class,'shop_items');
     }
+
+    // この商品に関連するチャットメッセージ
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
+
+    // この商品に関連する評価（通常は1つ）
+    public function rating()
+    {
+        return $this->hasOne(Rating::class);
+    }
 }
