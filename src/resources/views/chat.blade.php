@@ -153,7 +153,7 @@
 
             <input type="hidden" name="comment" value="評価のみ">
 
-            {{-- 修正: ボタン（右寄せコンテナ内） --}}
+            {{-- ボタン --}}
             <div class="modal-button-area">
                 <button type="submit" class="modal-submit-button">送信する</button>
             </div>

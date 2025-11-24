@@ -12,10 +12,10 @@ use App\Mail\AssessmentNotification;
 
 class RatingController extends Controller
 {
-    // ... (indexメソッド等は削除済み) ...
 
     /**
      * 評価の保存処理
+     * @return redirect リダイレクト
      */
     public function store(Request $request, $item_id)
     {
@@ -49,7 +49,6 @@ class RatingController extends Controller
         }
 
         // 商品一覧画面（トップページ）へ遷移
-        // withのメッセージも少し変更
         return redirect('/')->with('success', '評価を送信し、取引が完了しました。');
     }
 }

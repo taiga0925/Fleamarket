@@ -11,6 +11,10 @@ use App\Http\Requests\ChatRequest;
 
 class ChatController extends Controller
 {
+    /**
+     * チャット画面
+     * @return view ビュー
+     */
     public function index($item_id)
     {
         $user = Auth::user();
@@ -41,7 +45,7 @@ class ChatController extends Controller
         // 取引相手の情報を取得
         $partner = ($user->id === $buyer_id) ? $item->user : $soldItem->user;
 
-        // サイドバー用：自分の取引中商品リストを取得（FN003）
+        // サイドバー用：自分の取引中商品リストを取得
         // 1. 自分が購入した商品
         $boughtItems = Item::whereHas('soldToUsers', function ($query) use ($user) {
             $query->where('user_id', $user->id);
@@ -52,7 +56,7 @@ class ChatController extends Controller
             ->whereHas('soldToUsers')
             ->get();
 
-        // 結合して新しい順にソート（FN004の準備）
+        // 結合して新しい順にソート
         $dealingItems = $boughtItems->merge($soldItems)->sortByDesc(function ($item) {
             // 最新のチャット日時、なければ購入日時でソート
             $lastChat = $item->chats()->latest()->first();
@@ -65,6 +69,7 @@ class ChatController extends Controller
 
     /**
      * チャット送信処理
+     * @return redirect リダイレクト
      */
     public function store(ChatRequest $request, $item_id)
     {
@@ -81,7 +86,6 @@ class ChatController extends Controller
         }
 
         // 送信者・受信者の判定
-        // 型の不一致（文字列vs数値）を防ぐため '==' で比較します
         $receiver_id = null;
 
         if ($user->id == $soldItem->user_id) {
@@ -92,7 +96,7 @@ class ChatController extends Controller
             $receiver_id = $soldItem->user_id;
         }
 
-        // 受信者が特定できない場合（データ不整合など）、処理を中断
+        // 受信者が特定できない場合、処理を中断
         if (!$receiver_id) {
             abort(403, '取引相手が見つからないか、この取引の当事者ではありません。');
         }
@@ -113,7 +117,6 @@ class ChatController extends Controller
             $chatData['image'] = $filename;
         }
 
-        // DBに保存
         Chat::create($chatData);
 
         // チャット画面にリダイレクト
@@ -122,6 +125,7 @@ class ChatController extends Controller
 
     /**
      * チャット削除処理
+     * @return redirect リダイレクト
      */
     public function destroy($item_id, $chat_id)
     {
@@ -139,6 +143,7 @@ class ChatController extends Controller
 
     /**
      * チャット編集画面表示
+     * @return view ビュー
      */
     public function edit($item_id, $chat_id)
     {
@@ -154,10 +159,11 @@ class ChatController extends Controller
 
     /**
      * チャット更新処理
+     * @return redirect リダイレクト
      */
     public function update(Request $request, $item_id, $chat_id)
     {
-        // バリデーション（ChatRequestを使っても良いですが、今回は簡易的に記述）
+        // バリデーション
         $request->validate([
             'message' => 'required|string|max:400',
         ]);

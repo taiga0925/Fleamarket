@@ -17,7 +17,6 @@ class ChatRequest extends FormRequest
             // 1. 本文（必須）、3. 400文字以内
             'message' => 'required|string|max:400',
             // 2. 画像形式（.png, .jpeg）
-            // ※ jpgも実質jpegなので含めておくと親切ですが、厳密に指定なら mimes:png,jpeg
             'image'   => 'nullable|image|mimes:png,jpeg,jpg|max:2048',
         ];
     }

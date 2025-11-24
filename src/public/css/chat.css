@@ -193,9 +193,7 @@
 /* --- 自分のメッセージ（右寄せ） --- */
 .message-self {
     align-self: flex-end;
-    /* フレックスボックス内での右寄せ */
     align-items: flex-end;
-    /* 子要素を右揃え */
 }
 
 /* --- 相手のメッセージ（左寄せ） --- */
@@ -397,7 +395,7 @@
 }
 
 /* =========================================
-   評価モーダルスタイル (外縁まで線・左寄せ版)
+   評価モーダルスタイル
    ========================================= */
 .modal-overlay {
     display: none;
@@ -414,51 +412,40 @@
 
 .modal-content {
     background-color: #fdfce6;
-    /* 薄黄色 */
     border: 1px solid #333;
-    /* 外縁の黒線 */
     width: 600px;
     max-width: 90%;
-    /* パディングを設定 (ここでの50pxが重要) */
     padding: 40px 50px;
     border-radius: 10px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
     position: relative;
     box-sizing: border-box;
     text-align: left;
-    /* 基本は左寄せ */
 }
 
 /* タイトル */
 .modal-title {
     font-size: 28px;
-    /* 少し大きく */
     font-weight: bold;
     margin: 0 0 10px 0;
-    /* 下余白を少し減らす */
     color: #333;
     text-align: left;
-    /* 左寄せ */
 }
 
 /* 本文メッセージ */
 .modal-message {
     font-size: 16px;
-    /* サイズはそのまま */
     color: #888;
-    /* 灰色 */
     line-height: 1.6;
     margin: 0 0 30px 0;
     text-align: left;
-    /* 左寄せ */
     font-weight: bold;
 }
 
-/* ▼▼▼ 横線 (外縁まで伸ばす) ▼▼▼ */
+/* 横線  */
 .modal-divider {
     height: 1px;
     background-color: #000;
-    /* 黒線 */
     margin-bottom: 20px;
 
     /* 親要素のpadding(50px)分だけ左右に引き伸ばす */
@@ -480,7 +467,6 @@
     margin-bottom: 40px;
     display: flex;
     justify-content: center;
-    /* 星は中央 */
 }
 
 /* 星のデザイン */
@@ -511,7 +497,6 @@
 .modal-button-area {
     display: flex;
     justify-content: flex-end;
-    /* 右寄せ */
     margin-top: 20px;
 }
 
@@ -521,7 +506,6 @@
     min-width: 180px;
     padding: 10px 20px;
     background-color: #ff8888;
-    /* 薄い赤 */
     color: #fff;
     border: none;
     border-radius: 5px;
