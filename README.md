@@ -39,9 +39,8 @@
   - 取引完了（評価）時に出品者へメール通知
 
 ## 使用技術(実行環境)
-- **言語/フレームワーク**: PHP 8.x, Laravel 8.x
-- **データベース**: MySQL 8.0
-- **インフラ**: Docker (Laravel Sail)
+- **言語/フレームワーク**: PHP 8.4.4 , Laravel Framework 8.83.8
+- **データベース**: mysql Ver 15.1
 - **認証機能**: Laravel Fortify
 - **メールサーバー**: Mailtrap (開発環境用SMTPサーバー)
   - ※本番環境ではSendGridやSES等に切り替え可能
