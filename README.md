@@ -140,8 +140,8 @@
 <img width="1716" height="889" alt="image" src="https://github.com/taiga0925/Fleamarket/blob/main/ER.drawio.png" />
 
 ## 環境構築
-1. リポジトリをクローン
 ```bash
+1. リポジトリをクローン
 git clone git@github.com:coachtech-material/laravel-docker-template.git
 2. プロジェクトディレクトリに移動します
 mv laravel-docker-template marekt
