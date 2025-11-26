@@ -142,10 +142,17 @@
 ## 環境構築
 1. リポジトリをクローン
 ```bash
-git clone [リポジトリURL]
-cd [ディレクトリ名]
-パッケージのインストールBashcomposer install
-環境変数の設定 (.env)Bashcp .env.example .env
+git clone git@github.com:coachtech-material/laravel-docker-template.git
+2. プロジェクトディレクトリに移動します
+mv laravel-docker-template marekt
+3. Dockerコンテナをビルドして、バックグラウンドで起動します
+docker-compose up -d --build
+4. PHPコンテナに入り、Composerで依存パッケージをインストールします
+docker-compose exec php bash
+docker-compose exec php composer install
+5. Laravelの環境設定ファイルを作成します
+(srcディレクトリ内で.env.example をコピーして.env を作成)
+docker-compose exec php cp.env.example.env
 # .envファイル内のDB接続情報、MAIL設定(Mailtrap等)を環境に合わせて変更してください
 アプリケーションキーの生成Bashphp artisan key:generate
 シンボリックリンクの作成 (画像表示に必須)Bashphp artisan storage:link
