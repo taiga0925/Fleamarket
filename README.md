@@ -154,9 +154,11 @@ docker-compose exec php composer install
 (srcディレクトリ内で.env.example をコピーして.env を作成)
 docker-compose exec php cp.env.example.env
 # .envファイル内のDB接続情報、MAIL設定(Mailtrap等)を環境に合わせて変更してください
-アプリケーションキーの生成Bashphp artisan key:generate
-シンボリックリンクの作成 (画像表示に必須)Bashphp artisan storage:link
-マイグレーションとシーディング (ダミーデータ作成)Bashphp artisan migrate:fresh --seed
+アプリケーションキーの生成
+docker-compose exec php php artisan key:generate
+シンボリックリンクの作成 (画像表示に必須)
+docker-compose exec php php artisan migrate
+マイグレーションとシーディング (ダミーデータ作成)
 テスト用アカウント情報以下の3つのアカウントがシーダーによって作成されます。
       役割          メールアドレス     パスワード      状態
 ユーザーA (出品者)  test1@example.com  password  商品5点出品済み
