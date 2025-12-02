@@ -172,7 +172,24 @@ composer install
 ```bash
 cp .env.example .env
 ```
-※ここで必要に応じて .env ファイル内のDB接続情報やMAIL設定を変更してください
+※ここで必要に応じて .env ファイル内のDB接続情報を変更してください
+【重要】Mailtrapの設定 本アプリケーションはLaravel Fortifyによるメール認証機能を実装しています。 動作確認のため、以下の手順で Mailtrap の設定を行ってください。
+
+Mailtrapアカウントを作成・ログインし、Inboxを作成する。
+
+"Show Credentials" からSMTP情報を取得する。
+
+.env ファイルを開き、以下の項目を書き換える。
+```bash
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=取得したユーザー名
+MAIL_PASSWORD=取得したパスワード
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=hello@example.com
+```
+
 アプリケーションキーの生成
 ```bash
 php artisan key:generate
