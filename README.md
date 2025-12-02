@@ -33,17 +33,18 @@
 - **取引チャット機能**
   - メッセージ送信、画像送信
   - 取引完了ボタン（評価モーダル）
+  - 未読メッセージ数の表示
 - **取引評価機能**
   - 5段階評価、コメント送信
 - **メール通知機能**
   - 取引完了（評価）時に出品者へメール通知
 
 ## 使用技術(実行環境)
-- **言語/フレームワーク**: PHP 8.4.4 , Laravel Framework 8.83.8
-- **データベース**: mysql Ver 15.1
+- **言語/フレームワーク**: PHP  8.4.4 , Laravel  8.83.8
+- **データベース**: MySQL Ver 15.1
+- **インフラ**: Docker (Laravel Sail / docker-compose)
 - **認証機能**: Laravel Fortify
 - **メールサーバー**: Mailtrap (開発環境用SMTPサーバー)
-  - ※本番環境ではSendGridやSES等に切り替え可能
 
 ## テーブル設計
 
@@ -124,6 +125,7 @@
 | item_id | foreignId | Foreign Key (items) |
 | message | string | NULLable |
 | image | string | NULLable |
+| is_read | boolean | DEFAULT false (既読フラグ) |
 
 ### ratings テーブル (新規追加)
 | Column | Type | Options |
@@ -135,31 +137,32 @@
 | rating | integer | NOT NULL (1-5) |
 | comment | text | NULLable |
 
-## ER図 (リレーション概略)
-<img width="1716" height="889" alt="image" src="https://github.com/taiga0925/Fleamarket/blob/main/ER.drawio.png" />
+## ER図
+<img width="800" alt="ER図" src="https://github.com/taiga0925/Fleamarket/blob/main/ER.drawio.png?raw=true" />
 
 ## 環境構築
+
+**1. リポジトリをクローン**
 ```bash
-1. リポジトリをクローン
-git clone git@github.com:coachtech-material/laravel-docker-template.git
-2. プロジェクトディレクトリに移動します
-mv laravel-docker-template marekt
-3. Dockerコンテナをビルドして、バックグラウンドで起動します
+git clone [https://github.com/taiga0925/Fleamarket.git](https://github.com/taiga0925/Fleamarket.git)
+2. プロジェクトディレクトリに移動
+cd Fleamarket
+3. Dockerコンテナのビルドと起動
 docker-compose up -d --build
-4. PHPコンテナに入り、Composerで依存パッケージをインストールします
-docker-compose exec php bash
-docker-compose exec php composer install
-5. Laravelの環境設定ファイルを作成します
-(srcディレクトリ内で.env.example をコピーして.env を作成)
-docker-compose exec php cp.env.example.env
+4. 依存パッケージのインストール
+docker-compose exec php
+composer install
+5. 環境変数の設定
+cp .env.example .env
 # .envファイル内のDB接続情報、MAIL設定(Mailtrap等)を環境に合わせて変更してください
-アプリケーションキーの生成
-docker-compose exec php php artisan key:generate
-シンボリックリンクの作成 (画像表示に必須)
-docker-compose exec php php artisan migrate
-マイグレーションとシーディング (ダミーデータ作成)
-テスト用アカウント情報以下の3つのアカウントがシーダーによって作成されます。
-      役割          メールアドレス     パスワード      状態
+6. アプリケーションキーの生成
+php artisan key:generate
+7. シンボリックリンクの作成 (画像表示に必須)
+php artisan storage:link
+8. マイグレーションとシーディング (ダミーデータ作成)※このコマンドで初期アカウントと商品データが作成されます。
+php artisan migrate:fresh --seed
+テスト用アカウント情報シーダーによって以下の3つのアカウントが作成されます。
+役割                    メールアドレス    パスワード    状態
 ユーザーA (出品者)  test1@example.com  password  商品5点出品済み
 ユーザーB (出品者)  test2@example.com  password  商品5点出品済み
 ユーザーC (購入者)  test3@example.com  password  出品なし、購入専用（初期状態）
