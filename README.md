@@ -145,11 +145,11 @@
 **1. リポジトリをクローン**
 ```bash
 git clone [https://github.com/taiga0925/Fleamarket.git](https://github.com/taiga0925/Fleamarket.git)
-
+...
 ```bash
 2. プロジェクトディレクトリに移動
 cd Fleamarket
-
+...
 3. Dockerコンテナのビルドと起動
 docker-compose up -d --build
 
