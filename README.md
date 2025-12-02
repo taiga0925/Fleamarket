@@ -40,7 +40,7 @@
   - 取引完了（評価）時に出品者へメール通知
 
 ## 使用技術(実行環境)
-- **言語/フレームワーク**: PHP  8.4.4 , Laravel  8.83.8
+- **言語/フレームワーク**: PHP 8.4.4 , Laravel 8.83.8
 - **データベース**: MySQL Ver 15.1
 - **インフラ**: Docker (Laravel Sail / docker-compose)
 - **認証機能**: Laravel Fortify
@@ -145,6 +145,12 @@
 **1. リポジトリをクローン**
 ```bash
 git clone [https://github.com/taiga0925/Fleamarket.git](https://github.com/taiga0925/Fleamarket.git)
+
+## 環境構築
+
+**1. リポジトリをクローン**
+```bash
+git clone https://github.com/taiga0925/Fleamarket.git
 ```
 
 2. プロジェクトディレクトリに移動
