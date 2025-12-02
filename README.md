@@ -147,22 +147,22 @@
 git clone https://github.com/taiga0925/Fleamarket.git
 ```
 
-2. プロジェクトディレクトリに移動
+**2. プロジェクトディレクトリに移動**
 ```bash
 cd Fleamarket
 ```
 
-3. Dockerコンテナのビルドと起動
+**3. Dockerコンテナのビルドと起動**
 ```bash
 docker-compose up -d --build
 ```
 
-4. PHPコンテナにログイン これ以降のコマンドはコンテナ内で実行します。
+**4. PHPコンテナにログイン これ以降のコマンドはコンテナ内で実行します。**
 ```bash
 docker-compose exec php bash
 ```
 
-5. コンテナ内でのセットアップ
+**5. コンテナ内でのセットアップ**
 依存パッケージのインストール
 ```bash
 composer install
