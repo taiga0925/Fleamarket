@@ -185,7 +185,7 @@ php artisan storage:link
 php artisan migrate:fresh --seed
 ```
 
-テスト用アカウント情報
+# テスト用アカウント情報
 シーダーによって以下の3つのアカウントが作成されます。
 役割                    メールアドレス    パスワード    状態
 ユーザーA (出品者)  test1@example.com  password  商品5点出品済み
