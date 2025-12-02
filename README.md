@@ -145,23 +145,31 @@
 **1. リポジトリをクローン**
 ```bash
 git clone [https://github.com/taiga0925/Fleamarket.git](https://github.com/taiga0925/Fleamarket.git)
+
 2. プロジェクトディレクトリに移動
 cd Fleamarket
+
 3. Dockerコンテナのビルドと起動
 docker-compose up -d --build
-4. 依存パッケージのインストール
-docker-compose exec php
+
+4. PHPコンテナにログイン これ以降のコマンドはコンテナ内で実行します。
+docker-compose exec php bash
+
+5. コンテナ内でのセットアップ
+# 依存パッケージのインストール
 composer install
-5. 環境変数の設定
+# 環境変数の設定
 cp .env.example .env
-# .envファイル内のDB接続情報、MAIL設定(Mailtrap等)を環境に合わせて変更してください
-6. アプリケーションキーの生成
+# ※ここで必要に応じて .env ファイル内のDB接続情報やMAIL設定を変更してください
+# アプリケーションキーの生成
 php artisan key:generate
-7. シンボリックリンクの作成 (画像表示に必須)
+# シンボリックリンクの作成 (画像表示に必須)
 php artisan storage:link
-8. マイグレーションとシーディング (ダミーデータ作成)※このコマンドで初期アカウントと商品データが作成されます。
+# マイグレーションとシーディング (初期データ作成)
 php artisan migrate:fresh --seed
-テスト用アカウント情報シーダーによって以下の3つのアカウントが作成されます。
+
+テスト用アカウント情報
+シーダーによって以下の3つのアカウントが作成されます。
 役割                    メールアドレス    パスワード    状態
 ユーザーA (出品者)  test1@example.com  password  商品5点出品済み
 ユーザーB (出品者)  test2@example.com  password  商品5点出品済み
