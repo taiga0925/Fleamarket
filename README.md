@@ -171,7 +171,7 @@ composer install
 ```bash
 cp .env.example .env
 ```
-# ※ここで必要に応じて .env ファイル内のDB接続情報やMAIL設定を変更してください
+#※ここで必要に応じて .env ファイル内のDB接続情報やMAIL設定を変更してください
 # アプリケーションキーの生成
 ```bash
 php artisan key:generate
