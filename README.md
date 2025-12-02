@@ -144,12 +144,6 @@
 
 **1. リポジトリをクローン**
 ```bash
-git clone [https://github.com/taiga0925/Fleamarket.git](https://github.com/taiga0925/Fleamarket.git)
-
-## 環境構築
-
-**1. リポジトリをクローン**
-```bash
 git clone https://github.com/taiga0925/Fleamarket.git
 ```
 
