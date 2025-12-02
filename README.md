@@ -146,28 +146,44 @@
 ```bash
 git clone [https://github.com/taiga0925/Fleamarket.git](https://github.com/taiga0925/Fleamarket.git)
 ```
-```bash
+
 2. プロジェクトディレクトリに移動
+```bash
 cd Fleamarket
-...
-3. Dockerコンテナのビルドと起動
+```
+
+4. Dockerコンテナのビルドと起動
+```bash
 docker-compose up -d --build
+```
 
-4. PHPコンテナにログイン これ以降のコマンドはコンテナ内で実行します。
+5. PHPコンテナにログイン これ以降のコマンドはコンテナ内で実行します。
+```bash
 docker-compose exec php bash
+```
 
-5. コンテナ内でのセットアップ
+6. コンテナ内でのセットアップ
 # 依存パッケージのインストール
+```bash
 composer install
+```
 # 環境変数の設定
+```bash
 cp .env.example .env
+```
 # ※ここで必要に応じて .env ファイル内のDB接続情報やMAIL設定を変更してください
 # アプリケーションキーの生成
+```bash
 php artisan key:generate
+```
 # シンボリックリンクの作成 (画像表示に必須)
+```bash
 php artisan storage:link
+```
 # マイグレーションとシーディング (初期データ作成)
+```bash
 php artisan migrate:fresh --seed
+```
 
 テスト用アカウント情報
 シーダーによって以下の3つのアカウントが作成されます。
