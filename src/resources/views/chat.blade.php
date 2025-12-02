@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.chat_app')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
@@ -32,7 +32,11 @@
                         <img src="{{ $partner && $partner->img_url ? asset('storage/profiles/' . $partner->img_url) : asset('img/default_icon.svg') }}" alt="相手アイコン" class="chat-partner-icon">
                         <h2 class="chat-partner-name">{{ optional($partner)->name ?? '不明なユーザー' }} さんとの取引画面</h2>
                     </div>
-                    <button type="button" class="complete-button" onclick="openRatingModal()">取引を完了する</button>
+
+                    {{-- ▼▼▼ 購入者の場合のみボタンを表示 ▼▼▼ --}}
+                    @if($isBuyer)
+                        <button type="button" class="complete-button" onclick="openRatingModal()">取引を完了する</button>
+                    @endif
                 </div>
 
                 <div class="chat-header-item">
@@ -91,6 +95,7 @@
             </div>
 
             <div class="chat-footer">
+                {{-- ▼▼▼ エラーメッセージを入力欄の上に配置 ▼▼▼ --}}
                 @if ($errors->any())
                     <div class="chat-errors">
                         <ul>
@@ -100,10 +105,11 @@
                         </ul>
                     </div>
                 @endif
+                {{-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ --}}
 
-                <form action="{{ route('chat.store', ['item_id' => $item->id]) }}" method="POST" enctype="multipart/form-data" class="chat-input-form">
+                <form id="chat-input-form" action="{{ route('chat.store', ['item_id' => $item->id]) }}" method="POST" enctype="multipart/form-data" class="chat-input-form">
                     @csrf
-                    <input type="text" name="message" class="chat-input-text" placeholder="取引メッセージを送信" value="{{ old('message') }}">
+                    <input type="text" name="message" id="chat-message-input" class="chat-input-text" placeholder="取引メッセージを送信" value="{{ old('message') }}">
                     <label class="chat-upload-label">
                         <input type="file" name="image" id="chat-image-input" style="display:none;" onchange="updateFileName()">
                         画像を追加する
@@ -118,22 +124,17 @@
     </div>
 </div>
 
-{{-- ▼▼▼ 評価モーダル ▼▼▼ --}}
+{{-- 評価モーダル --}}
 <div id="rating-modal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
-        {{-- タイトル --}}
         <h2 class="modal-title">取引が完了しました</h2>
-
         <div class="modal-divider"></div>
-
-        <p class="modal-message">
-            今回の取引相手はどうでしたか？
-        </p>
+        <p class="modal-message">今回の取引相手はどうでしたか？</p>
+        <div class="modal-divider"></div>
 
         <form action="{{ route('rating.store', ['item_id' => $item->id]) }}" method="POST" class="modal-form">
             @csrf
-
-            {{-- 星評価 --}}
+            <p class="modal-label">評価</p>
             <div class="modal-rating-section">
                 <div class="stars">
                     <input type="radio" id="star5" name="rating" value="5" checked />
@@ -148,27 +149,42 @@
                     <label for="star1"><i class="fas fa-star"></i></label>
                 </div>
             </div>
-
             <div class="modal-divider"></div>
-
             <input type="hidden" name="comment" value="評価のみ">
-
-            {{-- ボタン --}}
             <div class="modal-button-area">
                 <button type="submit" class="modal-submit-button">送信する</button>
             </div>
         </form>
-
         <div class="modal-close-trigger" onclick="closeRatingModal()">×</div>
     </div>
 </div>
-{{-- ▲▲▲▲▲▲▲▲▲▲▲▲▲ --}}
 
 <script>
-    window.onload = function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        // スクロールを一番下へ
         var chatArea = document.getElementById('chat-area');
         if(chatArea) chatArea.scrollTop = chatArea.scrollHeight;
-    };
+
+        // 入力内容の保持 (LocalStorage)
+        const messageInput = document.getElementById('chat-message-input');
+        const chatForm = document.getElementById('chat-input-form');
+
+        if (messageInput) {
+            const storageKey = 'chat_draft_item_{{ $item->id }}';
+            const savedMessage = localStorage.getItem(storageKey);
+            if (savedMessage) messageInput.value = savedMessage;
+
+            messageInput.addEventListener('input', function() {
+                localStorage.setItem(storageKey, this.value);
+            });
+
+            if (chatForm) {
+                chatForm.addEventListener('submit', function() {
+                    localStorage.removeItem(storageKey);
+                });
+            }
+        }
+    });
 
     function updateFileName() {
         const input = document.getElementById('chat-image-input');

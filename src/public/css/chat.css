@@ -1,3 +1,10 @@
+/* ロゴのみヘッダーの調整 */
+.header-logo-only {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
 /* =========================================
    全体レイアウト
    ========================================= */
@@ -36,6 +43,7 @@
 .sidebar-header {
     padding: 15px;
     background-color: #333;
+    flex-shrink: 0;
 }
 
 .sidebar-title {
@@ -50,6 +58,8 @@
     padding: 15px;
     margin: 0;
     overflow-y: auto;
+    flex-grow: 1;
+    /* 残りの高さを埋める */
 }
 
 .dealing-item {
@@ -81,24 +91,26 @@
 }
 
 /* =========================================
-   メインエリア
+   メインエリア (スクロール修正の要)
    ========================================= */
 .chat-main {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-width: 0;
+    height: 100%;
+    /* 高さ固定 */
 }
 
-/* ヘッダー全体 */
 .chat-header {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid #e0e0e0;
     background-color: #fff;
+    flex-shrink: 0;
+    /* ヘッダーは縮まない */
 }
 
-/* ヘッダー上段 */
 .chat-header-top {
     display: flex;
     justify-content: space-between;
@@ -138,7 +150,6 @@
     font-size: 14px;
 }
 
-/* ヘッダー下段 */
 .chat-header-item {
     display: flex;
     align-items: center;
@@ -171,38 +182,40 @@
 }
 
 /* =========================================
-   チャットログエリア
+   チャットログエリア (スクロール修正の要)
    ========================================= */
 .chat-messages {
     flex: 1;
+    /* 残りの高さを全て使う */
     padding: 20px;
     overflow-y: auto;
+    /* ここだけスクロール */
     background-color: #fff;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-height: 0;
+    /* Flexbox子要素でのスクロールに必須 */
 }
 
-/* メッセージコンテナ */
 .message {
     display: flex;
     flex-direction: column;
     max-width: 70%;
+    flex-shrink: 0;
+    /* メッセージ自体は縮まない */
 }
 
-/* --- 自分のメッセージ（右寄せ） --- */
 .message-self {
-    align-self: flex-end;
-    align-items: flex-end;
+    align-self: flex-end !important;
+    align-items: flex-end !important;
 }
 
-/* --- 相手のメッセージ（左寄せ） --- */
 .message-partner {
-    align-self: flex-start;
-    align-items: flex-start;
+    align-self: flex-start !important;
+    align-items: flex-start !important;
 }
 
-/* ユーザー情報（アイコン+名前） */
 .message-user-info {
     display: flex;
     align-items: center;
@@ -223,7 +236,6 @@
     margin: 0 10px;
 }
 
-/* 吹き出し */
 .message-bubble {
     position: relative;
     width: fit-content;
@@ -241,13 +253,11 @@
     word-break: break-word;
 }
 
-/* 自分の吹き出し色 */
 .message-self .message-text {
     background-color: #ffebeb;
     border-bottom-right-radius: 0;
 }
 
-/* 相手の吹き出し色 */
 .message-partner .message-text {
     background-color: #f1f0f0;
     border-bottom-left-radius: 0;
@@ -268,7 +278,6 @@
     text-align: right;
 }
 
-/* 編集・削除ボタンエリア */
 .message-actions {
     display: flex;
     justify-content: flex-end;
@@ -301,6 +310,7 @@
 
 .action-button {
     position: relative;
+    top: -3.5px;
 }
 
 .action-link:hover,
@@ -310,7 +320,7 @@
 }
 
 /* =========================================
-   フッター（入力フォーム）
+   フッター (スクロール修正の要)
    ========================================= */
 .chat-footer {
     padding: 10px 20px;
@@ -318,6 +328,8 @@
     background-color: #fff;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
+    /* フッターは縮まない（常に表示） */
 }
 
 .chat-errors {
@@ -395,7 +407,7 @@
 }
 
 /* =========================================
-   評価モーダルスタイル
+   評価モーダルスタイル (最終版)
    ========================================= */
 .modal-overlay {
     display: none;
@@ -423,16 +435,14 @@
     text-align: left;
 }
 
-/* タイトル */
 .modal-title {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     margin: 0 0 10px 0;
     color: #333;
     text-align: left;
 }
 
-/* 本文メッセージ */
 .modal-message {
     font-size: 16px;
     color: #888;
@@ -442,19 +452,15 @@
     font-weight: bold;
 }
 
-/* 横線  */
 .modal-divider {
     height: 1px;
     background-color: #000;
     margin-bottom: 20px;
-
-    /* 親要素のpadding(50px)分だけ左右に引き伸ばす */
     margin-left: -50px;
     margin-right: -50px;
     width: calc(100% + 100px);
 }
 
-/* 「評価」ラベル */
 .modal-label {
     font-size: 20px;
     font-weight: bold;
@@ -462,14 +468,12 @@
     color: #333;
 }
 
-/* 星評価エリア */
 .modal-rating-section {
     margin-bottom: 40px;
     display: flex;
     justify-content: center;
 }
 
-/* 星のデザイン */
 .stars {
     display: flex;
     flex-direction: row-reverse;
@@ -493,14 +497,12 @@
     color: #ffd700;
 }
 
-/* ボタンエリア */
 .modal-button-area {
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
 }
 
-/* 送信ボタン */
 .modal-submit-button {
     width: auto;
     min-width: 180px;
@@ -519,7 +521,6 @@
     background-color: #ff6666;
 }
 
-/* 閉じるボタン */
 .modal-close-trigger {
     position: absolute;
     top: 20px;
@@ -548,6 +549,7 @@
         height: 150px;
         border-right: none;
         border-bottom: 1px solid #e0e0e0;
+        flex-shrink: 0;
     }
 
     .dealing-list {

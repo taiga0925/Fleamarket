@@ -1,77 +1,177 @@
+/* =========================================
+   ヘッダーレイアウト (修正版)
+   ========================================= */
+
+/* ベース設定 */
 .header {
     background: #000;
+    width: 100%;
 }
 
 .header__inner {
-    padding: 0 15px;
+    padding: 10px 20px;
+    /* 上下の余白を少し確保 */
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    /* パディングを含めた幅計算にする */
 }
 
+/* ヘッダーの中身を整列させる枠 */
 .header-utilities {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    /* 画面が狭い時に折り返しを許可 */
+    gap: 15px;
+    /* 要素間の隙間 */
 }
 
-.header-utility {
-    width: 35%;
+/* ----------------------------------
+   1. ロゴ部分 (左側)
+   ---------------------------------- */
+.header-utility:first-child {
+    /* ロゴエリアの幅設定 */
+    flex-shrink: 0;
+    /* 縮ませない */
+    width: auto;
 }
 
-img {
-    width: 70%;
+.header__logo {
+    display: block;
+    text-decoration: none;
+}
+
+/* ★修正: 全てのimgではなく、ヘッダーロゴのみに限定 */
+.header__logo img {
+    width: 150px;
+    /* ロゴの幅を固定（または max-width: 100%） */
+    height: auto;
+    display: block;
+}
+
+/* ----------------------------------
+   2. 検索バー部分 (中央)
+   ---------------------------------- */
+/* 中央の要素（検索バー）を広げる設定 */
+.header-utility:nth-child(2) {
+    flex-grow: 1;
+    /* 余ったスペースを埋める */
+    margin: 0 20px;
+    /* 左右の余白 */
+    max-width: 600px;
+    /* 広がりすぎないように制限 */
 }
 
 .header__search {
-    width: 70%;
-    padding: 0 1%;
+    width: 100%;
     text-align: center;
 }
 
 .search__item {
     height: 40px;
     width: 100%;
-    min-width: 280px;
-    max-width: 450px;
     border: none;
     border-radius: 3px;
-    padding: 2px 10px;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    font-size: 16px;
 }
+
+/* ----------------------------------
+   3. ナビゲーション部分 (右側)
+   ---------------------------------- */
+.header-utility:last-child {
+    width: auto;
+    flex-shrink: 0;
+    /* 縮ませない */
+}
+
 .header-nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    list-style: none;
+    /* 点を消す */
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+    /* リンク同士の間隔 */
 }
 
 .header-nav__item {
-    width: 50%;
+    width: auto;
+    /* 50%固定をやめて自動幅に */
     text-align: center;
 }
 
 .header-nav__link {
     color: #fff;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 16px;
+    /* 20pxは大きすぎる場合があるので調整 */
     cursor: pointer;
+    white-space: nowrap;
+    /* 折り返し禁止 */
+    font-weight: bold;
 }
 
 .header-nav__button {
     border: none;
     background: transparent;
     color: #fff;
-    font-size: 20px;
+    font-size: 16px;
     cursor: pointer;
+    font-weight: bold;
+    padding: 0;
 }
 
+/* 出品ボタン */
 .header-nav__button--store {
-    padding: 5% 18%;
-    border-radius: 6px;
+    padding: 8px 20px;
+    /* %指定をやめてpx指定に（安定するため） */
+    border-radius: 4px;
     background: #fff;
     color: #000;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    border: none;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
 }
 
-@media screen and (max-width: 768px) {
-    .header__inner {
-        width: 80%;
+/* =========================================
+   レスポンシブ対応 (850px以下: タブレット・スマホ)
+   ========================================= */
+@media screen and (max-width: 850px) {
+    .header-utilities {
+        flex-direction: column;
+        /* 縦並びにする */
+        gap: 15px;
+    }
+
+    /* 各エリアを横幅いっぱいに */
+    .header-utility:first-child,
+    .header-utility:nth-child(2),
+    .header-utility:last-child {
+        width: 100%;
+        margin: 0;
+        text-align: center;
+        max-width: none;
+    }
+
+    /* ロゴを中央寄せ */
+    .header__logo img {
+        margin: 0 auto;
+    }
+
+    /* ナビゲーションを中央寄せ */
+    .header-nav {
+        justify-content: center;
+        flex-wrap: wrap;
+        /* ボタンが多い場合は折り返す */
     }
 }

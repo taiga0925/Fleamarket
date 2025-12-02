@@ -30,12 +30,23 @@ class MyPageController extends Controller
         // 2. 購入した商品
         $soldItems = $user->soldToItems ?? collect();
 
-        // 3. 取引中の商品（出品して売れたもの + 購入したもの）
-        // ※ 厳密な「取引中」の定義が必要ですが、今回は「売買が成立した商品すべて」とします
-        // 自分が購入した商品
-        $boughtDealing = $soldItems;
-        // 自分が出品して売れた商品
-        $soldDealing = Item::where('user_id', $user->id)->has('soldToUsers')->get();
+        // 3. 取引中の商品（評価が完了していないもの）
+        // ▼▼▼ 修正: 評価(rating)が存在しない商品のみを取得 ▼▼▼
+
+        // 自分が購入した商品の中で、評価していないもの
+        // (soldToUsersリレーション経由で取得したItemコレクションからフィルタリング)
+        $boughtDealing = $soldItems->filter(function ($item) {
+            return $item->rating === null;
+        });
+
+        // 自分が出品して売れた商品のうち、評価されていないもの
+        // (doesntHave('rating') で評価がない商品をDB検索)
+        $soldDealing = Item::where('user_id', $user->id)
+            ->has('soldToUsers')    // 売れている
+            ->doesntHave('rating')  // まだ評価されていない（取引完了していない）
+            ->get();
+
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
         // 結合して日付順（新しい順）にソート
         $dealingItems = $boughtDealing->merge($soldDealing)->sortByDesc(function ($item) {
@@ -43,11 +54,21 @@ class MyPageController extends Controller
             return $lastChat ? $lastChat->created_at : $item->created_at;
         });
 
-        // 取引中の商品のメッセージ総数（タブの横に表示用）
+        // ▼▼▼ 修正: 未読メッセージ数のカウント ▼▼▼
         $totalMessagesCount = 0;
         foreach ($dealingItems as $item) {
-            $totalMessagesCount += $item->chats()->count();
+            // 自分宛て(receiver_id = $user->id) かつ 未読(is_read = false) の数をカウント
+            $unreadCount = $item->chats()
+                ->where('receiver_id', $user->id)
+                ->where('is_read', false)
+                ->count();
+
+            // ビューで使いやすいように、アイテムごとに未読数を一時的に保存
+            $item->unread_count = $unreadCount;
+
+            $totalMessagesCount += $unreadCount;
         }
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
         // 4. ユーザー評価の平均値（四捨五入）
         // receivedRatingsリレーションを使用

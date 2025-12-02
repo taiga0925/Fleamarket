@@ -15,6 +15,7 @@ class Chat extends Model
         'item_id',
         'message',
         'image',
+        'is_read', // ★追加
     ];
 
     // 送信者

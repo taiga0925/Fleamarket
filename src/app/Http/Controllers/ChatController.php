@@ -37,6 +37,14 @@ class ChatController extends Controller
             abort(403, 'このチャットにアクセスする権限がありません。');
         }
 
+        // ▼▼▼ 追加: 既読処理 ▼▼▼
+        // 「この商品のチャット」かつ「受信者が自分」かつ「未読」のものを既読にする
+        Chat::where('item_id', $item_id)
+            ->where('receiver_id', $user->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
         // チャット履歴を取得（古い順）
         $chats = Chat::where('item_id', $item_id)
             ->orderBy('created_at', 'asc')
@@ -64,7 +72,12 @@ class ChatController extends Controller
             return $lastChat ? $lastChat->created_at : ($soldInfo ? $soldInfo->created_at : $item->created_at);
         });
 
-        return view('chat', compact('item', 'chats', 'partner', 'dealingItems', 'user'));
+        // ▼▼▼ 追加: 自分が購入者かどうかを判定 ▼▼▼
+        $isBuyer = ($user->id === $buyer_id);
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+        // compactに 'isBuyer' を追加
+        return view('chat', compact('item', 'chats', 'partner', 'dealingItems', 'user', 'isBuyer'));
     }
 
     /**

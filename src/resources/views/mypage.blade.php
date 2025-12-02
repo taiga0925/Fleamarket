@@ -90,13 +90,11 @@
                 <div class="item-list">
                     @foreach ($dealingItems as $item)
                         <div class="item-box">
-                            {{-- メッセージ数のバッジ（左上） --}}
-                            @php
-                                $msgCount = $item->chats()->count();
-                            @endphp
-                            @if($msgCount > 0)
-                                <span class="item-badge">{{ $msgCount }}</span>
+                            {{-- ▼▼▼ 修正: 未読数バッジ（unread_countを使用） ▼▼▼ --}}
+                            @if(isset($item->unread_count) && $item->unread_count > 0)
+                                <span class="item-badge">{{ $item->unread_count }}</span>
                             @endif
+                            {{-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ --}}
 
                             <a href="{{ route('chat.index', ['item_id' => $item->id]) }}">
                                 <img class="item-image" src="{{ asset('storage/images/'.$item->image) }}">
