@@ -163,6 +163,7 @@ docker-compose exec php bash
 ```
 
 **5. コンテナ内でのセットアップ**
+
 依存パッケージのインストール
 ```bash
 composer install
