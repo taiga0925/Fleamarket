@@ -9,6 +9,7 @@
    全体レイアウト
    ========================================= */
 .chat-page-wrapper {
+    /* ヘッダーの高さを引いて画面内に収める */
     height: calc(100vh - 100px);
     background-color: #f5f5f5;
     padding: 20px;
@@ -22,10 +23,12 @@
     width: 100%;
     max-width: 1400px;
     height: 100%;
+    /* 親要素の高さいっぱいに */
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    /* コンテナからはみ出させない */
 }
 
 /* =========================================
@@ -38,6 +41,7 @@
     display: flex;
     flex-direction: column;
     background-color: #f0f0f0;
+    height: 100%;
 }
 
 .sidebar-header {
@@ -58,8 +62,8 @@
     padding: 15px;
     margin: 0;
     overflow-y: auto;
+    /* サイドバーもスクロール可 */
     flex-grow: 1;
-    /* 残りの高さを埋める */
 }
 
 .dealing-item {
@@ -99,7 +103,8 @@
     flex-direction: column;
     min-width: 0;
     height: 100%;
-    /* 高さ固定 */
+    overflow: hidden;
+    /* ★重要: これがないと内部スクロールが効かず全体が伸びてしまう */
 }
 
 .chat-header {
@@ -108,7 +113,7 @@
     border-bottom: 1px solid #e0e0e0;
     background-color: #fff;
     flex-shrink: 0;
-    /* ヘッダーは縮まない */
+    /* ★重要: ヘッダーは縮ませない */
 }
 
 .chat-header-top {
@@ -186,16 +191,16 @@
    ========================================= */
 .chat-messages {
     flex: 1;
-    /* 残りの高さを全て使う */
+    /* 余ったスペースを全て使う */
     padding: 20px;
     overflow-y: auto;
-    /* ここだけスクロール */
+    /* 縦スクロールを有効化 */
     background-color: #fff;
     display: flex;
     flex-direction: column;
     gap: 20px;
     min-height: 0;
-    /* Flexbox子要素でのスクロールに必須 */
+    /* ★重要: Firefox/ChromeでのFlex子要素スクロールバグ回避 */
 }
 
 .message {
@@ -203,7 +208,7 @@
     flex-direction: column;
     max-width: 70%;
     flex-shrink: 0;
-    /* メッセージ自体は縮まない */
+    /* メッセージがつぶれないように */
 }
 
 .message-self {
@@ -329,7 +334,7 @@
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    /* フッターは縮まない（常に表示） */
+    /* ★重要: フッターは絶対に縮ませない */
 }
 
 .chat-errors {
@@ -407,7 +412,7 @@
 }
 
 /* =========================================
-   評価モーダルスタイル (最終版)
+   評価モーダルスタイル
    ========================================= */
 .modal-overlay {
     display: none;
@@ -540,6 +545,8 @@
    レスポンシブ対応
    ========================================= */
 @media (max-width: 850px) {
+
+    /* 縦並びレイアウトへの変更 */
     .chat-container {
         flex-direction: column;
     }
@@ -550,6 +557,14 @@
         border-right: none;
         border-bottom: 1px solid #e0e0e0;
         flex-shrink: 0;
+        /* サイドバーの高さ固定 */
+    }
+
+    .chat-main {
+        flex: 1;
+        /* 残りの高さをメインエリアが使う */
+        height: auto;
+        /* 高さは自動計算（親の残り） */
     }
 
     .dealing-list {

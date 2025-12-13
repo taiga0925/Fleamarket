@@ -72,12 +72,33 @@ class ChatController extends Controller
             return $lastChat ? $lastChat->created_at : ($soldInfo ? $soldInfo->created_at : $item->created_at);
         });
 
-        // ▼▼▼ 追加: 自分が購入者かどうかを判定 ▼▼▼
+        // 自分が購入者かどうか
         $isBuyer = ($user->id === $buyer_id);
-        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
-        // compactに 'isBuyer' を追加
-        return view('chat', compact('item', 'chats', 'partner', 'dealingItems', 'user', 'isBuyer'));
+        // ▼▼▼ 追加: 評価が可能かどうかを判定 ▼▼▼
+        // 条件: 自分がまだ評価していないこと
+        $myRating = \App\Models\Rating::where('item_id', $item_id)
+            ->where('rater_id', $user->id)
+            ->exists();
+
+        // 相手が評価済みかどうか (出品者の場合、購入者が評価済みでないと評価できないようにする場合)
+        $partnerRating = \App\Models\Rating::where('item_id', $item_id)
+            ->where('rater_id', '!=', $user->id)
+            ->exists();
+
+        // ボタンを表示するかどうか
+        // 購入者: 常に表示可能（自分が未評価なら）
+        // 出品者: 購入者が評価済み かつ 自分が未評価なら表示可能
+        $canRate = false;
+        if ($isBuyer) {
+            if (!$myRating) $canRate = true;
+        } else {
+            // 出品者の場合、相手(購入者)の評価が終わっている必要がある
+            if ($partnerRating && !$myRating) $canRate = true;
+        }
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+        return view('chat', compact('item', 'chats', 'partner', 'dealingItems', 'user', 'isBuyer', 'canRate'));
     }
 
     /**

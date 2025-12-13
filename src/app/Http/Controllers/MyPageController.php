@@ -30,20 +30,22 @@ class MyPageController extends Controller
         // 2. 購入した商品
         $soldItems = $user->soldToItems ?? collect();
 
-        // 3. 取引中の商品（評価が完了していないもの）
-        // ▼▼▼ 修正: 評価(rating)が存在しない商品のみを取得 ▼▼▼
+        // 3. 取引中の商品
 
-        // 自分が購入した商品の中で、評価していないもの
-        // (soldToUsersリレーション経由で取得したItemコレクションからフィルタリング)
-        $boughtDealing = $soldItems->filter(function ($item) {
-            return $item->rating === null;
+        // ▼▼▼ 修正: 「自分が評価していない商品」を取得するように変更 ▼▼▼
+
+        // A. 自分が購入した商品の中で、自分がまだ評価していないもの
+        $boughtDealing = $soldItems->filter(function ($item) use ($user) {
+            // item->ratings の中に、rater_id が自分(user->id)のものが存在しない場合 = まだ評価していない
+            return !$item->ratings->where('rater_id', $user->id)->count();
         });
 
-        // 自分が出品して売れた商品のうち、評価されていないもの
-        // (doesntHave('rating') で評価がない商品をDB検索)
+        // B. 自分が出品して売れた商品のうち、自分がまだ評価していないもの
         $soldDealing = Item::where('user_id', $user->id)
-            ->has('soldToUsers')    // 売れている
-            ->doesntHave('rating')  // まだ評価されていない（取引完了していない）
+            ->has('soldToUsers') // 売れている
+            ->whereDoesntHave('ratings', function ($query) use ($user) {
+                $query->where('rater_id', $user->id); // 自分が評価した記録がない
+            })
             ->get();
 
         // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲

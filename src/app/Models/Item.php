@@ -61,8 +61,9 @@ class Item extends Model
     }
 
     // この商品に関連する評価（通常は1つ）
-    public function rating()
+    // ▼▼▼ 変更後: 複数の評価を持てるように hasMany に変更 ▼▼▼
+    public function ratings()
     {
-        return $this->hasOne(Rating::class);
+        return $this->hasMany(Rating::class);
     }
 }

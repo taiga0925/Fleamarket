@@ -33,10 +33,12 @@
                         <h2 class="chat-partner-name">{{ optional($partner)->name ?? '不明なユーザー' }} さんとの取引画面</h2>
                     </div>
 
-                    {{-- ▼▼▼ 購入者の場合のみボタンを表示 ▼▼▼ --}}
                     @if($isBuyer)
-                        <button type="button" class="complete-button" onclick="openRatingModal()">取引を完了する</button>
+                        {{-- 購入者のみボタンを表示 --}}
+                        <button type="button" class="complete-button" onclick="openBuyerModal()">取引を完了する</button>
                     @endif
+                    {{-- 出品者($canRate)の場合は、自動モーダルが出るのでボタンは表示しない --}}
+                    {{-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ --}}
                 </div>
 
                 <div class="chat-header-item">
@@ -95,7 +97,6 @@
             </div>
 
             <div class="chat-footer">
-                {{-- ▼▼▼ エラーメッセージを入力欄の上に配置 ▼▼▼ --}}
                 @if ($errors->any())
                     <div class="chat-errors">
                         <ul>
@@ -105,7 +106,6 @@
                         </ul>
                     </div>
                 @endif
-                {{-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ --}}
 
                 <form id="chat-input-form" action="{{ route('chat.store', ['item_id' => $item->id]) }}" method="POST" enctype="multipart/form-data" class="chat-input-form">
                     @csrf
@@ -124,48 +124,104 @@
     </div>
 </div>
 
-{{-- 評価モーダル --}}
-<div id="rating-modal" class="modal-overlay" style="display: none;">
+{{-- ▼▼▼ ① 購入者用 モーダル (ID: buyer-rating-modal) ▼▼▼ --}}
+<div id="buyer-rating-modal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
         <h2 class="modal-title">取引が完了しました</h2>
-        <div class="modal-divider"></div>
-        <p class="modal-message">今回の取引相手はどうでしたか？</p>
+
+        <p class="modal-message">
+            今回の取引相手はどうでしたか？
+        </p>
+
         <div class="modal-divider"></div>
 
         <form action="{{ route('rating.store', ['item_id' => $item->id]) }}" method="POST" class="modal-form">
             @csrf
+
             <p class="modal-label">評価</p>
+
             <div class="modal-rating-section">
                 <div class="stars">
-                    <input type="radio" id="star5" name="rating" value="5" checked />
-                    <label for="star5"><i class="fas fa-star"></i></label>
-                    <input type="radio" id="star4" name="rating" value="4" />
-                    <label for="star4"><i class="fas fa-star"></i></label>
-                    <input type="radio" id="star3" name="rating" value="3" />
-                    <label for="star3"><i class="fas fa-star"></i></label>
-                    <input type="radio" id="star2" name="rating" value="2" />
-                    <label for="star2"><i class="fas fa-star"></i></label>
-                    <input type="radio" id="star1" name="rating" value="1" />
-                    <label for="star1"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="b-star5" name="rating" value="5" checked />
+                    <label for="b-star5"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="b-star4" name="rating" value="4" />
+                    <label for="b-star4"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="b-star3" name="rating" value="3" />
+                    <label for="b-star3"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="b-star2" name="rating" value="2" />
+                    <label for="b-star2"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="b-star1" name="rating" value="1" />
+                    <label for="b-star1"><i class="fas fa-star"></i></label>
                 </div>
             </div>
+
             <div class="modal-divider"></div>
+
             <input type="hidden" name="comment" value="評価のみ">
+
             <div class="modal-button-area">
                 <button type="submit" class="modal-submit-button">送信する</button>
             </div>
         </form>
-        <div class="modal-close-trigger" onclick="closeRatingModal()">×</div>
+
+        <div class="modal-close-trigger" onclick="closeBuyerModal()">×</div>
     </div>
 </div>
 
+{{-- ▼▼▼ ② 出品者用 モーダル (ID: seller-rating-modal) ▼▼▼ --}}
+<div id="seller-rating-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        {{-- 文言等は必要に応じて変更してください --}}
+        <h2 class="modal-title">取引が完了しました</h2>
+
+        <p class="modal-message">
+            購入者の評価を行ってください。
+        </p>
+
+        <div class="modal-divider"></div>
+
+        <form action="{{ route('rating.store', ['item_id' => $item->id]) }}" method="POST" class="modal-form">
+            @csrf
+
+            <p class="modal-label">評価</p>
+
+            <div class="modal-rating-section">
+                <div class="stars">
+                    {{-- IDが重複しないように s- を付与 --}}
+                    <input type="radio" id="s-star5" name="rating" value="5" checked />
+                    <label for="s-star5"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="s-star4" name="rating" value="4" />
+                    <label for="s-star4"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="s-star3" name="rating" value="3" />
+                    <label for="s-star3"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="s-star2" name="rating" value="2" />
+                    <label for="s-star2"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="s-star1" name="rating" value="1" />
+                    <label for="s-star1"><i class="fas fa-star"></i></label>
+                </div>
+            </div>
+
+            <div class="modal-divider"></div>
+
+            <input type="hidden" name="comment" value="評価のみ">
+
+            <div class="modal-button-area">
+                <button type="submit" class="modal-submit-button">送信する</button>
+            </div>
+        </form>
+
+        <div class="modal-close-trigger" onclick="closeSellerModal()">×</div>
+    </div>
+</div>
+{{-- ▲▲▲▲▲▲▲▲▲▲▲▲▲ --}}
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // スクロールを一番下へ
+        // 1. スクロールを一番下へ
         var chatArea = document.getElementById('chat-area');
         if(chatArea) chatArea.scrollTop = chatArea.scrollHeight;
 
-        // 入力内容の保持 (LocalStorage)
+        // 2. 入力内容の保持 (LocalStorage)
         const messageInput = document.getElementById('chat-message-input');
         const chatForm = document.getElementById('chat-input-form');
 
@@ -184,6 +240,13 @@
                 });
             }
         }
+
+        // ▼▼▼ 追加: 出品者用モーダルの自動表示 ▼▼▼
+        // 「出品者」かつ「評価可能（＝購入者が既に評価済み）」の場合、自動でモーダルを開く
+        @if(!$isBuyer && isset($canRate) && $canRate)
+            openSellerModal();
+        @endif
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
     });
 
     function updateFileName() {
@@ -198,12 +261,20 @@
         }
     }
 
-    function openRatingModal() {
-        document.getElementById('rating-modal').style.display = 'flex';
+    // 購入者用モーダル
+    function openBuyerModal() {
+        document.getElementById('buyer-rating-modal').style.display = 'flex';
+    }
+    function closeBuyerModal() {
+        document.getElementById('buyer-rating-modal').style.display = 'none';
     }
 
-    function closeRatingModal() {
-        document.getElementById('rating-modal').style.display = 'none';
+    // 出品者用モーダル
+    function openSellerModal() {
+        document.getElementById('seller-rating-modal').style.display = 'flex';
+    }
+    function closeSellerModal() {
+        document.getElementById('seller-rating-modal').style.display = 'none';
     }
 </script>
 @endsection
