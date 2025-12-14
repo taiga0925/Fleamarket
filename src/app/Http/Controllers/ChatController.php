@@ -78,7 +78,7 @@ class ChatController extends Controller
             $lastChat = $item->chats()->latest()->first();
             return $lastChat ? $lastChat->created_at : $item->created_at;
         });
-        `
+        
         // 自分が購入者かどうか
         $isBuyer = ($user->id === $buyer_id);
 
