@@ -30,25 +30,34 @@ class MyPageController extends Controller
         // 2. 購入した商品
         $soldItems = $user->soldToItems ?? collect();
 
-        // 3. 取引中の商品
+        // ▼▼▼ 修正: 3. 取引中の商品 (双方の評価が終わるまで表示) ▼▼▼
 
-        // ▼▼▼ 修正: 「自分が評価していない商品」を取得するように変更 ▼▼▼
-
-        // A. 自分が購入した商品の中で、自分がまだ評価していないもの
+        // A. 自分が購入した商品 (Buyer Side)
         $boughtDealing = $soldItems->filter(function ($item) use ($user) {
-            // item->ratings の中に、rater_id が自分(user->id)のものが存在しない場合 = まだ評価していない
-            return !$item->ratings->where('rater_id', $user->id)->count();
+            // 自分の評価があるか
+            $hasMyRating = $item->ratings->where('rater_id', $user->id)->count();
+            // 相手(出品者)の評価があるか
+            $hasSellerRating = $item->ratings->where('rater_id', $item->user_id)->count();
+
+            // 「両方」が評価済みでない限り、取引中として表示する
+            return !($hasMyRating && $hasSellerRating);
         });
 
-        // B. 自分が出品して売れた商品のうち、自分がまだ評価していないもの
-        $soldDealing = Item::where('user_id', $user->id)
-            ->has('soldToUsers') // 売れている
-            ->whereDoesntHave('ratings', function ($query) use ($user) {
-                $query->where('rater_id', $user->id); // 自分が評価した記録がない
-            })
-            ->get();
+        // B. 自分が出品して売れた商品 (Seller Side)
+        // 以前の whereDoesntHave ロジックを変更し、フィルタリングで統一します
+        $mySoldItems = Item::where('user_id', $user->id)->has('soldToUsers')->get();
 
-        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+        $soldDealing = $mySoldItems->filter(function ($item) use ($user) {
+            // 自分の評価
+            $hasMyRating = $item->ratings->where('rater_id', $user->id)->count();
+            // 相手(購入者)の評価 (自分以外の評価)
+            $hasBuyerRating = $item->ratings->where('rater_id', '!=', $user->id)->count();
+
+            // 「両方」が評価済みでない限り、取引中として表示する
+            return !($hasMyRating && $hasBuyerRating);
+        });
+
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
         // 結合して日付順（新しい順）にソート
         $dealingItems = $boughtDealing->merge($soldDealing)->sortByDesc(function ($item) {

@@ -53,25 +53,32 @@ class ChatController extends Controller
         // 取引相手の情報を取得
         $partner = ($user->id === $buyer_id) ? $item->user : $soldItem->user;
 
-        // サイドバー用：自分の取引中商品リストを取得
-        // 1. 自分が購入した商品
-        $boughtItems = Item::whereHas('soldToUsers', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })->get();
+        // ▼▼▼ 修正: サイドバー用 取引中リストの取得ロジック統一 ▼▼▼
 
-        // 2. 自分が販売して売れた商品
-        $soldItems = Item::where('user_id', $user->id)
-            ->whereHas('soldToUsers')
-            ->get();
-
-        // 結合して新しい順にソート
-        $dealingItems = $boughtItems->merge($soldItems)->sortByDesc(function ($item) {
-            // 最新のチャット日時、なければ購入日時でソート
-            $lastChat = $item->chats()->latest()->first();
-            $soldInfo = Sold_item::where('item_id', $item->id)->first();
-            return $lastChat ? $lastChat->created_at : ($soldInfo ? $soldInfo->created_at : $item->created_at);
+        // A. 自分が購入した商品
+        $soldItems = $user->soldToItems ?? collect();
+        $boughtDealing = $soldItems->filter(function ($item) use ($user) {
+            $hasMyRating = $item->ratings->where('rater_id', $user->id)->count();
+            $hasSellerRating = $item->ratings->where('rater_id', $item->user_id)->count();
+            return !($hasMyRating && $hasSellerRating);
         });
 
+        // B. 自分が出品した商品
+        $mySoldItems = Item::where('user_id', $user->id)->has('soldToUsers')->get();
+        $soldDealing = $mySoldItems->filter(function ($item) use ($user) {
+            $hasMyRating = $item->ratings->where('rater_id', $user->id)->count();
+            $hasBuyerRating = $item->ratings->where('rater_id', '!=', $user->id)->count();
+            return !($hasMyRating && $hasBuyerRating);
+        });
+
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+        // 結合して新しい順にソート
+        $dealingItems = $boughtDealing->merge($soldDealing)->sortByDesc(function ($item) {
+            $lastChat = $item->chats()->latest()->first();
+            return $lastChat ? $lastChat->created_at : $item->created_at;
+        });
+        `
         // 自分が購入者かどうか
         $isBuyer = ($user->id === $buyer_id);
 
